@@ -1,0 +1,202 @@
+@import url('./pdfViewer.less');
+
+.vue-preview {
+  &__root {
+    position: fixed;
+    z-index: 9999999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  &__tool--disable {
+    opacity: 0.3 !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important
+  }
+
+  &__mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #00000073;
+    z-index: -1
+  }
+
+  &__header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 48px;
+    background: rgba(0, 0, 0, .1);
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+
+    &__pdf-viewer{
+      display: flex;
+      align-items: center;
+    }
+
+    &__tools {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  &__content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: fit-content;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: white;
+      border: 1px solid rgba(184, 187, 193, 0.4);
+      border-radius: 10px;
+    }
+
+    .vue-preview {
+      &__volume__box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &__volume {
+        position: relative;
+        width: 50px;
+        height: 2px;
+        background-color: #515151;
+
+        &__sign {
+          position: absolute;
+          width: 10px;
+          height: 6px;
+          background-color: #515151;
+          top: 50%;
+          transform: translate(-5px, -50%);
+          border-radius: 1px;
+
+          &:hover {
+            width: 10px;
+            height: 10px;
+          }
+        }
+      }
+
+      &__progress {
+        position: relative;
+        width: 100%;
+        height: 2px;
+        background-color: #515151;
+
+        &__sign {
+          position: absolute;
+          width: 10px;
+          height: 6px;
+          background-color: #515151;
+          top: 50%;
+          transform: translate(-5px, -50%);
+          border-radius: 1px;
+
+          &:hover {
+            .vue-preview__progress__current-time {
+              display: block;
+            }
+
+            width: 10px;
+            height: 10px;
+          }
+        }
+
+        &__full-time {
+          position: absolute;
+          font-size: 12px;
+          right: 0;
+          margin-top: 4px;
+          user-select: none;
+        }
+
+        &__current-time {
+          display: none;
+          position: absolute;
+          font-size: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 0;
+          margin-bottom: 10px;
+          user-select: none;
+        }
+      }
+
+      &__image__slot {
+        max-height: 100%;
+        max-width: 100%;
+        transition: all .2s ease;
+        cursor: grab;
+      }
+
+      &__audio__slot {
+        .vue-preview__audio {
+          &__image {
+            height: 300px;
+            width: 300px;
+            object-fit: contain;
+          }
+
+          &__dashboard {
+            margin-top: 24px;
+            height: 64px;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+
+            &__progress {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: all .3s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: scale(0)
+  }
+
+
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: scale(1)
+  }
+}
+
+.cursor--grabbing {
+  cursor: grabbing !important;
+}
