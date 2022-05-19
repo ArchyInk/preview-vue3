@@ -2,7 +2,7 @@
  * @author: Archy
  * @Date: 2022-04-22 10:03:25
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-17 10:07:48
+ * @LastEditTime: 2022-05-19 17:02:03
  * @FilePath: \preview-vue3\example\App.vue
  * @description: 
 -->
@@ -17,11 +17,185 @@ import { ref } from 'vue'
   <br />
   <span v-preview="'http://demo.archy.ink/preview-vue3/assets/test.1cd30900.pdf'">pdf</span>
   <br />
-  <span v-preview="'http://demo.archy.ink/preview-vue3/assets/test.5436ebd4.mp3'">音频</span>
+  <span
+    v-preview="{ url: 'http://demo.archy.ink/preview-vue3/assets/test.5436ebd4.mp3', options: { name:'test',coverImage: 'http://demo.archy.ink/preview-vue3/assets/test.744b6685.png' } }">音频</span>
   <br />
   <span v-preview="'http://demo.archy.ink/preview-vue3/assets/test.f98776a7.mp4'">视频</span>
   <br />
   <span v-preview="'C://img'">未知类型</span>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br /> 
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
   <br />
 </template>
 

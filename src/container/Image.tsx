@@ -2,14 +2,16 @@
  * @author: Archy
  * @Date: 2022-04-22 14:09:31
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-10 15:00:51
- * @FilePath: \vue3-preview\src\container\Image.tsx
+ * @LastEditTime: 2022-05-19 16:30:47
+ * @FilePath: \preview-vue3\src\container\Image.tsx
  * @description: 
  */
-import { defineComponent, reactive, onUnmounted, onUpdated } from 'vue';
+import { defineComponent, reactive, onUnmounted, onUpdated, ref, nextTick } from 'vue';
 import type { ExtractPropTypes } from 'vue'
 
 import { renderHeader } from '../components/renders';
+
+import down from '../utils/download'
 
 // 组件引入
 import { warpperProps } from '../components/Warpper';
@@ -20,12 +22,14 @@ import turn from '../assets/turn.svg'
 import zoomIn from '../assets/zoomin.svg'
 import zoomOut from '../assets/zoomout.svg'
 import close from '../assets/close.svg'
+import download from '../assets/download.svg'
 
 // 钩子函数引入
 import { useState } from 'arhooks-vue';
 
 export const imageProps = () => Object.assign({
   src: { type: String, required: true },
+  name: String,
   alt: String,
   title: String
 }, warpperProps()
@@ -44,11 +48,18 @@ export default defineComponent({
     const [zoom, setZoom] = useState<number>(1)
     const [deg, setDeg] = useState<number>(0)
 
+    const warpper = ref()
+
     const toolButtons = [
       { src: turn, alt: '右旋', title: '向右旋转90°', onClick: () => { deg.value += 90 }, style: { transform: 'scale(1.3)' } },
       { src: turn, alt: '左旋', title: '向左旋转90°', onClick: () => { deg.value -= 90 }, style: { transform: 'rotateY(180deg) scale(1.3)' } },
       { src: zoomIn, alt: '放大', title: '放大', onClick: () => { handleZoom(true) } },
       { src: zoomOut, alt: '缩小', title: '缩小', disable: zoom.value <= 1, onClick: () => { handleZoom(false) } },
+      {
+        src: download, alt: '下载', title: '下载', onClick: () => {
+          down(props.src!, props.name!)
+        }
+      },
       { src: close, alt: '关闭', title: '关闭', onClick: () => { emit('update:visible', false) } },
     ]
 
@@ -114,7 +125,7 @@ export default defineComponent({
       </>
     }
 
-    const wheelEventListener = (e: any) => {
+    const wheelEventListener = (e: WheelEvent) => {
       if (e.deltaY < 0) {
         setZoomIn()
       } else {
@@ -130,7 +141,9 @@ export default defineComponent({
       setDeg(0)
     }
 
-    window.addEventListener('wheel', wheelEventListener)
+    nextTick(() => {
+      window.addEventListener('wheel', wheelEventListener)
+    })
 
     onUpdated(() => {
       if (props.visible) {
@@ -146,6 +159,7 @@ export default defineComponent({
 
     return () => {
       return <Warpper
+        ref={warpper}
         v-model:visible={props.visible}
         onMaskClick={() => { emit('update:visible', false) }}
         v-slots={{

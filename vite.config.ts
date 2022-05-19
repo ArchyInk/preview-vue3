@@ -2,19 +2,19 @@
  * @author: Archy
  * @Date: 2022-04-22 10:03:25
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-13 15:44:52
- * @FilePath: \vue3-preview\vite.config.ts
+ * @LastEditTime: 2022-05-19 17:03:09
+ * @FilePath: \preview-vue3\vite.config.ts
  * @description: 
  */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import libCss from 'vite-plugin-libcss'
-// import dts from 'vite-plugin-dts'
+import dts from 'vite-plugin-dts'
 const path = require('path')
 
 export default defineConfig({
-  plugins: [vue(), vueJsx(), libCss()],
+  plugins: [vue(), vueJsx(), libCss(), dts({ outputDir: './dist/types',exclude:'./example' })],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),

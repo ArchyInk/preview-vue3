@@ -2,8 +2,8 @@
  * @author: Archy
  * @Date: 2022-04-24 10:26:18
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-10 15:01:16
- * @FilePath: \vue3-preview\src\container\Audio.tsx
+ * @LastEditTime: 2022-05-19 16:31:22
+ * @FilePath: \preview-vue3\src\container\Audio.tsx
  * @description: 
  */
 import { defineComponent, onUpdated, onUnmounted } from 'vue';
@@ -11,6 +11,7 @@ import type { ExtractPropTypes, CSSProperties } from 'vue'
 
 import { warpperProps } from '../components/Warpper';
 import { formatTime } from '../utils/format';
+import down from '../utils/download';
 
 import { renderHeader } from '../components/renders';
 
@@ -25,14 +26,15 @@ import close from '../assets/close.svg'
 import playSvg from '../assets/play.svg'
 import pauseSvg from '../assets/pause.svg'
 import stopSvg from '../assets/stop.svg'
+import download from '../assets/download.svg'
 
 // 钩子函数引入
 import { useState, useBoolean, useEventListener } from 'arhooks-vue';
 
 export const audioProps = () => Object.assign({
   src: { type: String, required: true },
-  coverImage: String,
   name: String,
+  coverImage: String,
 }, warpperProps()
 )
 
@@ -119,6 +121,11 @@ export default defineComponent({
 
     // 上方工具按钮数组
     const toolButtons = [
+      {
+        src: download, alt: '下载', title: '下载', onClick: () => {
+          down(props.src!, props.name!)
+        }
+      },
       { src: close, alt: '关闭', title: '关闭', onClick: () => { emit('update:visible', false) } },
     ]
 

@@ -2,8 +2,8 @@
  * @author: Archy
  * @Date: 2022-04-22 14:20:58
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-13 14:35:07
- * @FilePath: \vue3-preview\src\index.tsx
+ * @LastEditTime: 2022-05-19 16:59:44
+ * @FilePath: \preview-vue3\src\index.tsx
  * @description:
  */
 
@@ -18,10 +18,19 @@ import Unpreviewable from './container/Unpreviewable'
 import Video from './container/Video'
 import PDF from './container/Pdf'
 
+import './shims.d.ts'
 import './styles/index.less'
 
-export type vuePreviewOpt = {
-  url: string
+export type VuePreviewBinding = {
+  url: string,
+  options?: VuePreviewOptions
+}
+
+export type VuePreviewOptions = {
+  alt?: string,
+  title?: string,
+  coverImage?: string,
+  name?: string
 }
 
 // 插入vue-preview插件根节点
@@ -37,7 +46,7 @@ const appendRoot = () => {
   return div
 }
 
-const switchHandle = (url: string) => {
+const switchHandle = (url: string, options?: VuePreviewOptions) => {
   const type = getType(url)
   const div = appendRoot()
   const visible = ref(true)
@@ -45,19 +54,19 @@ const switchHandle = (url: string) => {
     switch (type) {
       // 处理图片类型
       case 'image':
-        render(<Image v-model:visible={visible.value} src={url}></Image>, div!)
+        render(<Image v-model:visible={visible.value} src={url} name={options?.name} alt={options?.alt} title={options?.title}></Image>, div!)
         break
       // 处理PDF类别
       case 'pdf':
-        render(<PDF v-model:visible={visible.value} src={url}></PDF>, div!)
+        render(<PDF v-model:visible={visible.value} src={url} name={options?.name}></PDF>, div!)
         break
       // 处理音频类别
       case 'audio':
-        render(<Audio v-model:visible={visible.value} src={url}></Audio>, div!)
+        render(<Audio v-model:visible={visible.value} src={url} name={options?.name} coverImage={options?.coverImage}></Audio>, div!)
         break
       // 处理视频类别
       case 'video':
-        render(<Video v-model:visible={visible.value} src={url}></Video>, div!)
+        render(<Video v-model:visible={visible.value} src={url} name={options?.name} coverImage={options?.coverImage}></Video>, div!)
         break
       // 处理不能预览的类别
       default:
@@ -83,7 +92,7 @@ export default {
         }
       } else if (typeof binding.value === 'object') {
         const url = binding.value.url
-        switchHandle(url)
+        switchHandle(url, binding.value.options)
       } else {
         throw Error(
           `Expected \`string\` or \`Object\` pr \`Promise\`,but got \`${typeof binding.value}\`.`
@@ -91,4 +100,4 @@ export default {
       }
     })
   },
-} as Directive<any, string | vuePreviewOpt | Promise<Record<string, any>>>
+} as Directive<any, string | VuePreviewBinding | Promise<Record<string, any>>>

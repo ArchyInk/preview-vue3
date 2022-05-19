@@ -2,8 +2,8 @@
  * @author: Archy
  * @Date: 2022-04-26 13:44:11
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-10 15:32:22
- * @FilePath: \vue3-preview\src\components\Tool.tsx
+ * @LastEditTime: 2022-05-19 14:19:35
+ * @FilePath: \preview-vue3\src\components\Tool.tsx
  * @description: 上方工具按钮组件
  */
 import { defineComponent } from 'vue';
@@ -40,7 +40,7 @@ export default defineComponent({
       emit('click', e)
     }
     return () => {
-      return <img src={props.src} style={props.style} alt={props.alt} title={props.title} class={props.disable ? 'vue-preview__tool--disable' : ''} onClick={handleClick} />
+      return <img src={props.src} style={props.style} alt={props.alt} title={props.title} class={props.disable ? 'vue-preview__tool--disable' : ''}  onClick={handleClick} />
     }
   }
 })

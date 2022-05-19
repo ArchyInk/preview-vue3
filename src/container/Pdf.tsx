@@ -2,8 +2,8 @@
  * @author: Archy
  * @Date: 2022-04-24 10:26:31
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-13 09:31:38
- * @FilePath: \vue3-preview\src\container\Pdf.tsx
+ * @LastEditTime: 2022-05-19 16:56:14
+ * @FilePath: \preview-vue3\src\container\Pdf.tsx
  * @description: 
  */
 import { CSSProperties, defineComponent, ref } from 'vue';
@@ -20,11 +20,13 @@ import Tool from '../components/Tool';
 import close from '../assets/close.svg'
 import download from '../assets/download.svg'
 import print from '../assets/print.svg'
+import prev from '../assets/prev.svg'
 
 import { useState } from 'arhooks-vue';
 
 export const pdfProps = () => Object.assign({
   src: { type: String, required: true },
+  name: { type: String }
 }, warpperProps()
 )
 
@@ -42,7 +44,14 @@ export default defineComponent({
       return <>
         <div class="vue-preview__header__slot"></div>
         <div class="vue-preview__header__tools">
-          <Tool src={download} style={defaultIconStyle} alt="下载" title="下载" onClick={() => { pdfViewer.value.download() }} />
+          <Tool src={prev} style={defaultIconStyle} alt="上一页" title="上一页" onClick={() => { setPageNum((val) => val - 1) }} />
+          <input style={defaultIconStyle} class="vue-preview__header__tools__input" onKeypress={(e: any) => {
+            if (e.key === 'Enter') {
+              setPageNum(Number(e.target.value) || 1)
+            }
+          }}></input>
+          <Tool src={prev} style={{ ...defaultIconStyle, transform: 'rotate(180deg)' }} alt="下一页" title="下一页" onClick={() => { setPageNum((val) => val + 1) }} />
+          <Tool src={download} style={defaultIconStyle} alt="下载" title="下载" onClick={() => { pdfViewer.value.download(props.name) }} />
           <Tool src={print} style={defaultIconStyle} alt="打印" title="打印" onClick={() => { pdfViewer.value.print() }} />
           <Tool src={close} style={defaultIconStyle} alt="关闭" title="关闭" onClick={() => { emit('update:visible', false) }} />
         </div>
@@ -64,7 +73,6 @@ export default defineComponent({
       }
       return <Warpper
         v-model:visible={props.visible}
-        onMaskClick={() => { emit('update:visible', false) }}
         contentStyle={contentStyle}
         v-slots={{
           content: () => renderPdf(),

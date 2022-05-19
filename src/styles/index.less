@@ -1,4 +1,5 @@
 @import url('./pdfViewer.less');
+@import url('./videojs.less');
 
 .vue-preview {
   &__root {
@@ -14,6 +15,51 @@
     opacity: 0.3 !important;
     pointer-events: none !important;
     cursor: not-allowed !important
+  }
+
+  &__message {
+    &__content {
+      font-size: 14px;
+      color: #000000d9;
+      background-color: white;
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      display: inline-block;
+      padding: 10px 16px;
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
+      pointer-events: all;
+    }
+
+
+    &__mask {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999999999;
+      background: rgba(0, 0, 0, .1);
+    }
+
+    &-enter-active,
+    &-leave-active {
+      transition: opacity .3s ease;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+    }
+
+
+    &-enter-to,
+    &-leave-from {
+      opacity: 1;
+    }
   }
 
   &__mask {
@@ -36,9 +82,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
 
-    &__pdf-viewer{
+
+    &__pdf-viewer {
       display: flex;
       align-items: center;
     }
@@ -48,6 +94,23 @@
       justify-content: flex-end;
       align-items: center;
       height: 100%;
+
+      &__input {
+        width:40px !important;
+        cursor: auto !important;
+        outline: none ;
+        box-sizing: border-box;
+        margin: 0;
+        list-style: none;
+        display: inline-block;
+        color: #000000d9;
+        font-size: 14px;
+        line-height: 1.5715;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+      }
     }
   }
 

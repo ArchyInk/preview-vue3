@@ -2,12 +2,13 @@
  * @author: Archy
  * @Date: 2022-04-24 10:25:51
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-12 16:43:02
- * @FilePath: \vue3-preview\src\components\Warpper.tsx
+ * @LastEditTime: 2022-05-18 15:38:43
+ * @FilePath: \preview-vue3\src\components\Warpper.tsx
  * @description: 外层组件
  */
-import { defineComponent, Transition } from 'vue'
+import { defineComponent, onUpdated, Transition } from 'vue'
 import type { ExtractPropTypes, PropType, CSSProperties } from 'vue'
+import { watch } from 'vue'
 
 export const warpperProps = () => ({
   maskStyle: Object as PropType<CSSProperties>,
@@ -46,6 +47,17 @@ export default defineComponent({
         </div>
       )
     }
+    if (props.visible) {
+      document.body.style.overflowY = 'hidden'
+    }
+
+    onUpdated(() => {
+      if (props.visible) {
+        document.body.style.overflowY = 'hidden'
+      } else {
+        document.body.style.overflowY = 'auto'
+      }
+    })
 
     return () => {
       return <Transition name="vue-preview" appear>{props.visible ? renderContainerRoot() : null}</Transition>

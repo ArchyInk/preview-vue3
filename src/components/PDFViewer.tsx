@@ -1,16 +1,17 @@
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref, watch, nextTick, withDirectives, openBlock } from 'vue';
 
 import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist'
-import { debounce } from 'lodash-es'
+import { loading as LOADING } from 'ardirectives'
 
 // 类型引入
-import type { ExtractDefaultPropTypes, PropType } from 'vue'
-import type { PDFDocumentProxy, PDFPageProxy, PageViewport } from 'pdfjs-dist';
+import type { ExtractDefaultPropTypes } from 'vue'
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 
 // worker资源引入
 import pdfWorker from '../assets/pdfjs/pdf.worker.min.js?url'
+
 // 钩子函数引入
-import { useBoolean, useCreateElement, useState } from 'arhooks-vue';
+import { useBoolean, useState } from 'arhooks-vue';
 import down from '../utils/download'
 import printJS from 'print-js'
 
@@ -18,6 +19,7 @@ export const pdfViewerProps = () => ({
   src: { type: String, required: true },
   pageNum: { type: Number, default: 1 },
   scale: { type: Number, default: 1 },
+  name: { type: String }
 })
 
 export type PDFViewerProps = Partial<ExtractDefaultPropTypes<ReturnType<typeof pdfViewerProps>>>
@@ -26,16 +28,15 @@ export default defineComponent({
   name: 'PDFViewer',
   props: pdfViewerProps(),
   emits: ['error', 'update:pageNum'],
+  directives: { 'loading': LOADING },
   setup(props, { emit, expose }) {
     GlobalWorkerOptions.workerSrc = pdfWorker
     const container = ref<HTMLDivElement>()
-    const singleCanvas = ref<HTMLCanvasElement>()
-    const [loading, { setTrue: setLoadingTrue, setFalse: setLoadingFalse }] = useBoolean(false)
     const [totalPage, setTotalPage] = useState<number>(0)
     let document: PDFDocumentProxy | undefined = undefined
     const pageCache: Array<{ page: PDFPageProxy | undefined, rendered: boolean }> = []
     const [pageRefs, setPageRefs] = useState<Array<HTMLCanvasElement | undefined>>([])
-
+    const [loading, { setTrue: setLoadingTrue, setFalse: setLoadingFalse }] = useBoolean(true)
     // 显示监听器
     const ob = new IntersectionObserver(obs => {
       let maxPage = 1
@@ -49,8 +50,11 @@ export default defineComponent({
         }
         await render()
       })
-
     }, {});
+
+    nextTick(() => {
+    })
+
     const initDocument = async () => {
       try {
         setLoadingTrue()
@@ -61,7 +65,6 @@ export default defineComponent({
 
         await preLoad(1)
         await render()
-
         setLoadingFalse()
       } catch (err) {
         emit('error', err)
@@ -132,7 +135,7 @@ export default defineComponent({
 
     const renderContainer = () => {
       const canvasArr = pageRefs.value.map((_, index) => {
-        return <div class='vue-pdf-viewer__page'>
+        return <div class='vue-pdf-viewer__page' >
           <canvas id={`vue-pdf-viewer__page-${index + 1}`} data-page={index + 1} ref={(el) => {
             if (el) {
               pageRefs.value[index] = el as HTMLCanvasElement
@@ -142,7 +145,7 @@ export default defineComponent({
         </div>
       })
       return <>
-        <div class='vue-pdf-viewer__container' ref={container} style={{ width: '60vw' }}>
+        <div class='vue-pdf-viewer__container' v-loading={{ visible: loading.value, options: { width: 60, height: 60 } }} ref={container} style={{ width: '60vw', minHeight: "100vh" }}>
           {canvasArr}
         </div>
       </>
@@ -164,8 +167,8 @@ export default defineComponent({
       printJS(props.src!)
     }
 
-    const download = () => {
-      down(props.src!)
+    const download = (name?: string) => {
+      down(props.src!, name)
     }
 
     expose({ print, download })
