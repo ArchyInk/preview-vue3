@@ -2,7 +2,7 @@
  * @author: Archy
  * @Date: 2022-05-06 14:54:38
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-19 17:00:59
+ * @LastEditTime: 2022-05-23 10:52:31
  * @FilePath: \preview-vue3\src\shims.d.ts
  * @description: 
  */
@@ -14,9 +14,9 @@ type VPreviewDirective = {
   'v-preview'?: VuePreviewBinding;
 };
 
-type VPreviewShimesTypes = VLoadingDirective & VDownloadingDirective
+type VPreviewShimesTypes = VPreviewDirective
 
 declare module 'vue' {
-  export interface HTMLAttributes extends ArdirectivesShimesTypes { }
+  export interface HTMLAttributes extends VPreviewShimesTypes { }
 }
 

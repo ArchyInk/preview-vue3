@@ -2,7 +2,7 @@
  * @author: Archy
  * @Date: 2022-05-17 10:03:57
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-19 16:26:19
+ * @LastEditTime: 2022-05-23 10:50:10
  * @FilePath: \preview-vue3\src\utils\download.tsx
  * @description: 
  */
@@ -20,7 +20,7 @@ import download from '../assets/download2.svg'
 export default async (url: string, filename?: string, request: boolean = true) => {
   const link = useCreateElement<'a'>('a')
   if (request) {
-    const close = message(<div style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}><img src={download} style={{marginRight:'4px'}} height={16} ></img><div>正在准备下载中...</div></div>)
+    const close = message(<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}><img src={download} style={{ marginRight: '4px', height: '16px' }}  ></img><div>正在准备下载中...</div></div>)
     const blob = await (await fetch(url)).blob()
     close()
     url = URL.createObjectURL(blob)
