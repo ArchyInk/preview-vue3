@@ -2,13 +2,13 @@
  * @author: Archy
  * @Date: 2022-04-22 14:20:58
  * @LastEditors: Archy
- * @LastEditTime: 2022-05-19 16:59:44
+ * @LastEditTime: 2022-06-13 09:58:59
  * @FilePath: \preview-vue3\src\index.tsx
  * @description:
  */
 
 import { render, nextTick, ref, watch } from 'vue'
-import type { Directive } from 'vue'
+import type { Directive, DirectiveBinding } from 'vue'
 import getType from './utils/getType'
 
 // 组件引入
@@ -76,28 +76,35 @@ const switchHandle = (url: string, options?: VuePreviewOptions) => {
   }, { immediate: true })
 }
 
+const addEvent = (el: any, binding: DirectiveBinding<string | VuePreviewBinding | Promise<Record<string, any>>>) => {
+  el.addEventListener('click', async () => {
+    if (typeof binding.value === 'string') {
+      const url = binding.value
+      switchHandle(url)
+    } else if (binding.value instanceof Promise) {
+      const asyncValue = await binding.value
+      const url = asyncValue.default || asyncValue
+      if (typeof url !== 'string') {
+        throw Error(`The type of Promise result is not \`string\`.`)
+      } else {
+        switchHandle(url)
+      }
+    } else if (typeof binding.value === 'object') {
+      const url = binding.value.url
+      switchHandle(url, binding.value.options)
+    } else {
+      throw Error(
+        `Expected \`string\` or \`Object\` pr \`Promise\`,but got \`${typeof binding.value}\`.`
+      )
+    }
+  })
+}
+
 export default {
   mounted(el, binding) {
-    el.addEventListener('click', async () => {
-      if (typeof binding.value === 'string') {
-        const url = binding.value
-        switchHandle(url)
-      } else if (binding.value instanceof Promise) {
-        const asyncValue = await binding.value
-        const url = asyncValue.default || asyncValue
-        if (typeof url !== 'string') {
-          throw Error(`The type of Promise result is not \`string\`.`)
-        } else {
-          switchHandle(url)
-        }
-      } else if (typeof binding.value === 'object') {
-        const url = binding.value.url
-        switchHandle(url, binding.value.options)
-      } else {
-        throw Error(
-          `Expected \`string\` or \`Object\` pr \`Promise\`,but got \`${typeof binding.value}\`.`
-        )
-      }
-    })
+    addEvent(el, binding)
   },
+  updated(el, binding) {
+    addEvent(el, binding)
+  }
 } as Directive<any, string | VuePreviewBinding | Promise<Record<string, any>>>
