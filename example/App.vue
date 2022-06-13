@@ -2,20 +2,16 @@
  * @author: Archy
  * @Date: 2022-04-22 10:03:25
  * @LastEditors: Archy
- * @LastEditTime: 2022-06-13 10:00:12
+ * @LastEditTime: 2022-06-13 10:27:32
  * @FilePath: \preview-vue3\example\App.vue
  * @description: 
 -->
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useState } from 'arhooks-vue'
-const [url, setUrl] = useState<string>('/测试中文.pdf')
-setTimeout(() => {
+const [url, setUrl] = useState<string>('/测试中文小米字体.pdf')
+setTimeout(()=>{
   setUrl('http://demo.archy.ink/preview-vue3/assets/test.744b6685.png')
-}, 5000)
-setTimeout(() => {
-  setUrl('/测试中文.pdf')
-}, 10000)
+},2000)
 </script>
 
 <template>
@@ -23,7 +19,7 @@ setTimeout(() => {
   <br />
   <span v-preview="'http://demo.archy.ink/preview-vue3/assets/test.744b6685.png'">过宽png图片</span>
   <br />
-  <span v-preview="url">pdf</span>
+  <span v-dist-preview="url">pdf</span>
   <br />
   <span
     v-preview="{ url: 'http://demo.archy.ink/preview-vue3/assets/test.5436ebd4.mp3', options: { name: 'test', coverImage: 'http://demo.archy.ink/preview-vue3/assets/test.744b6685.png' } }">音频</span>
