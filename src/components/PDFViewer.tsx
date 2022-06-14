@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch, nextTick, withDirectives, openBlock } from 'vue';
+import { defineComponent, ref, watch, nextTick } from 'vue';
 
 import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist'
 import { loading as LOADING } from 'ardirectives'
@@ -6,9 +6,6 @@ import { loading as LOADING } from 'ardirectives'
 // 类型引入
 import type { ExtractDefaultPropTypes } from 'vue'
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
-
-// worker资源引入
-import pdfWorker from '../assets/pdfjs/pdf.worker.min.js?url'
 
 // 钩子函数引入
 import { useBoolean, useState } from 'arhooks-vue';
@@ -30,7 +27,7 @@ export default defineComponent({
   emits: ['error', 'update:pageNum'],
   directives: { 'loading': LOADING },
   setup(props, { emit, expose }) {
-    GlobalWorkerOptions.workerSrc = pdfWorker
+    GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.js'
     const container = ref<HTMLDivElement>()
     const [totalPage, setTotalPage] = useState<number>(0)
     let document: PDFDocumentProxy | undefined = undefined
@@ -52,17 +49,14 @@ export default defineComponent({
       })
     }, {});
 
-    nextTick(() => {
-    })
 
     const initDocument = async () => {
       try {
         setLoadingTrue()
-        document = await getDocument(props.src!).promise // 获取document
+        document = await getDocument({ url: props.src!, cMapPacked: true, cMapUrl: '/pdfjs/cMaps/' }).promise // 获取document
         setTotalPage(document.numPages) // 获取总页数
         initPageRefs()
         initPageCache()
-
         await preLoad(1)
         await render()
         setLoadingFalse()
